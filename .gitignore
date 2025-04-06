@@ -1,11 +1,5 @@
-__pycache__/
-*.py[cod]
-*.sqlite3
-.env
 venv/
-*.log
-*.pot
 *.pyc
-local_settings.py
-db.sqlite3
-media/
+__pycache__/
+node_modules/
+.DS_Store
