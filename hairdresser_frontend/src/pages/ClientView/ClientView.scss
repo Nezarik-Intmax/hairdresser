@@ -1,0 +1,42 @@
+@use "../../styles/_config" as *;
+
+.filter {
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr 1fr;
+	grid-gap: 10px;
+	margin-bottom: 40px;
+
+	.MuiFormControl-root {
+		fieldset {
+			border-color: transparent;
+			background:
+				linear-gradient(to right, white, white),
+				$gradient75-var;
+			background-clip: padding-box, border-box;
+			background-origin: padding-box, border-box;
+			transition: --myColor1 0.3s, --myColor2 0.3s, all 0.3s;
+
+		}
+
+		label {
+			background: white;
+		}
+
+		.MuiSelect-select {
+			position: relative;
+			z-index: 2;
+		}
+
+		.MuiSvgIcon-root, input{
+			z-index: 2;
+		}
+
+		&:hover {
+			fieldset {
+				--myColor1: #{$first-color};
+				border-color: transparent;
+			}
+		}
+	}
+
+}

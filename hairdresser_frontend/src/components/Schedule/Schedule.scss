@@ -1,0 +1,144 @@
+@use "../../styles/_config" as *;
+
+.schedule {
+	display: flex;
+	overflow: scroll;
+	gap: 20px;
+	position: relative;
+	z-index: 0;
+	background: white;
+	padding-bottom: 20px;
+
+	&__wrap{
+		position: relative;
+	}
+	&__line {
+		position: absolute;
+		content: '';
+		top: 60px;
+		left: 0;
+		right: 0;
+		width: 100%;
+		height: 1px;
+		background: $gradient50;
+		z-index: 1;
+	}
+
+	&__day {
+		text-align: left;
+		width: 15%;
+		flex-shrink: 0;
+		display: flex;
+		flex-direction: column;
+		align-items: stretch;
+		justify-content: stretch;
+		--block-position: 1px;
+	}
+
+	&__date {
+		height: 38px;
+		font-size: 20px;
+		background: white;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		border: 1px solid transparent;
+		position: relative;
+		border-radius: $border-radius;
+		// width: 172px;
+
+		&_wrap {
+			// overflow: hidden;
+			margin-bottom: 40px;
+			padding: 1px;
+			border: 1px solid transparent;
+			background:
+				linear-gradient(to right, white, white),
+				linear-gradient(to right,
+					var(--myColor1) calc(0px - var(--block-position)),
+					var(--myColor2) calc(580px - var(--block-position)));
+			background-clip: padding-box, border-box;
+			background-origin: padding-box, border-box;
+			transition: --myColor1 0.3s, --myColor2 0.3s, all 0.3s;
+			border-radius: $border-radius;
+
+		}
+
+		// &_bg {
+		// 	position: absolute;
+		// 	top: 0;
+		// 	left: 0;
+		// 	width: 1160px;
+		// 	height: 40px;
+		// 	background: $gradient75;
+		// 	z-index: -1;
+		// }
+
+		// &:before,
+		// &:after {
+		// 	position: absolute;
+		// 	content: '';
+		// 	top: -2px;
+		// 	bottom: -1px;
+		// 	bottom: 0;
+		// 	width: 100vw;
+		// 	height: 40px;
+		// 	background: white;
+		// 	z-index: -1;
+		// }
+		// &:before{
+		// 	right: 172px;
+		// 	width: 20px;
+		// }
+		// &:after{
+		// 	width: 20px;
+		// 	left: 172px;
+		// }
+
+		span {
+			position: relative;
+			z-index: 2;
+		}
+	}
+
+	&__slots {
+		display: flex;
+		flex-direction: column;
+		gap: 20px;
+		justify-content: space-between;
+		flex-grow: 1;
+
+	}
+
+	&__slot {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		border: 1px solid transparent;
+		background:
+			linear-gradient(to right, white, white),
+			linear-gradient(to right,
+				var(--myColor1) calc(0px - var(--block-position)),
+				var(--myColor2) calc(580px - var(--block-position)));
+		background-clip: padding-box, border-box;
+		background-origin: padding-box, border-box;
+		transition: --myColor1 0.3s, --myColor2 0.3s, all 0.3s;
+		border-radius: $border-radius;
+		min-height: 40px;
+
+		&--duration-2 {
+			flex-grow: 2;
+		}
+
+		&--duration-3 {
+			flex-grow: 3;
+		}
+
+		&--booked{
+			background: #eeeeee;
+		}
+		&--available{
+			cursor: pointer;
+		}
+	}
+}

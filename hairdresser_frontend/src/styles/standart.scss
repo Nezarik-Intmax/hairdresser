@@ -1,0 +1,38 @@
+@use "_config" as *;
+
+section {
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+	padding: $section-padding;
+}
+
+.tal {
+	text-align: left;
+}
+
+.up-title{
+	margin-bottom: $up-title-margin;
+}
+.title{
+	font-size: $title-font-size;
+	font-weight: $title-font-weight;
+	margin-bottom: $title-margin;
+	line-height: 100%;
+	text-align: left;
+}
+h1.title{
+	font-size: $big-title-font-size;
+	font-weight: $big-title-font-weight;
+}
+.subtitle{
+	margin-bottom: $subtitle-margin;
+}
+
+
+.App{
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}

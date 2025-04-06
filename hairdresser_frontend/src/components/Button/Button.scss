@@ -1,0 +1,115 @@
+@use "../../styles/_config" as *;
+
+
+@property --myColor1 {
+	syntax: '<color>';
+	initial-value: #000000;
+	inherits: false;
+}
+
+@property --myColor2 {
+	syntax: '<color>';
+	initial-value: $first-color;
+	inherits: false;
+}
+
+.btn__wrap {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: 10px;
+
+	&.btn__wrap--left {
+		justify-content: flex-start;
+		gap: 10px;
+	}
+
+	&.btn__wrap--right {
+		justify-content: flex-end;
+		gap: 10px;
+	}
+
+	&.btn__wrap--center {
+		justify-content: center;
+		gap: 10px;
+	}
+
+	&.btn__wrap--full-height {
+		align-items: stretch;
+	}
+
+	&.btn__wrap--full-width {
+		justify-content: stretch;
+
+		a {
+			width: 100%;
+		}
+	}
+
+	a,
+	input {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		padding: 15px 60px;
+
+		color: #282327;
+		background: white;
+		border: 1px solid transparent;
+		background: 
+			linear-gradient(to right, white, white), 
+			$gradient75-var;
+		background-clip: padding-box, border-box;
+		background-origin: padding-box, border-box;
+		transition: --myColor1 0.3s, --myColor2 0.3s, all 0.3s;
+		border-radius: $border-radius;
+
+		font-weight: 400;
+		font-size: $text-font-size;
+
+		&:hover {
+			color: $first-color;
+			--myColor1: #{$first-color};
+		}
+
+		&.transparent {
+			background: transparent;
+			color: #ffffff;
+			border: 1px solid $first-color;
+
+			&:hover {
+				background: $first-color;
+				color: #282327;
+			}
+		}
+
+		&.secondary {
+			background: #ffffff19;
+			color: #ffffff;
+			border: #ffffff19;
+
+			&:hover {
+				background: $first-color;
+				color: #282327;
+			}
+
+			@include tablet {
+				text-align: left;
+				color: $first-color;
+				background: transparent;
+			}
+		}
+	}
+
+	&.no-padding {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		grid-gap: 10px;
+		height: 40px;
+		align-items: stretch;
+
+		a {
+			padding: 0;
+		}
+	}
+}

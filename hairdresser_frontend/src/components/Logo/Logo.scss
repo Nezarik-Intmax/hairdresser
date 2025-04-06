@@ -1,0 +1,14 @@
+@use "../../styles/_config" as *;
+
+.logo {
+	&__wrap {
+		display: flex;
+		align-items: center;
+		gap: 5px;
+		height: 60px;
+	}
+	&__text{
+		font-size: 20px;
+		line-height: 100%;
+	}
+}

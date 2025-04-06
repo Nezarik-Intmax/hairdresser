@@ -1,0 +1,88 @@
+//vars
+$bg-1-color: #ffffff;
+$bg-2-color: #ffffff;
+$footer-bg: $bg-1-color;
+
+$text-color: #232323;
+
+$first-color: #BC9661;
+
+$firstcolor: $first-color;
+$second-color: #ffffff;
+$third-color: #446266;
+$highlight: $first-color;
+
+$gradient75: linear-gradient(to right, #000000, $first-color 75%);
+$gradient50: linear-gradient(to right, #000000, $first-color 50%);
+$gradient75-var: linear-gradient(to right, var(--myColor1), var(--myColor2) 75%);
+
+$title-font: 'Roboto', sans-serif;
+$text-font: 'Roboto', sans-serif;
+
+$big-title-font-size: 32px;
+$title-font-size: 24px;
+$text-font-size: 16px;
+
+$text-font-size-mob: 14px;
+
+$big-title-font-weight: 400;
+$title-font-weight: 400;
+$text-font-weight: 400;
+
+$up-title-margin: 20px;
+$title-margin: 40px;
+$subtitle-margin: 20px;
+
+$border-radius: 5px;
+
+$section-padding: 50px 0;
+
+$c_desc: 1440px;
+$c_mid: 1160px;
+$c_tabl: 767px;
+$c_mob: 100%;
+$container-padding: 24px;
+$container-padding-mob: 12px;
+
+@mixin desk-only{
+    @media screen and (min-width: $c_mid){
+        @content;
+    }
+}
+@mixin laptop{
+    @media screen and (max-width: $c_desc){
+        @content;
+    }
+}
+@mixin tablet-only{
+    @media screen and (min-width: $c_tabl) and (max-width: $c_mid){
+        @content;
+    }
+}
+@mixin tablet{
+    @media screen and (max-width: $c_mid){
+        @content;
+    }
+}
+@mixin phone{
+    @media screen and (max-width: $c_tabl){
+        @content;
+    }
+} 
+@mixin mobile{
+    @media screen and (max-width: $c_tabl){
+        @content;
+    }
+} 
+
+@mixin before_abs{
+	&:before{
+		position: absolute;
+		content: '';
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		@content;
+	}
+}

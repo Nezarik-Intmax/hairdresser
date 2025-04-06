@@ -1,0 +1,23 @@
+@use "../../styles/_config" as *;
+
+.header {
+	padding: 20px 0;
+	position: relative;
+
+	&:after {
+		content: '';
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		height: 1px;
+		width: 100%;
+		display: block;
+		background: $gradient75;
+	}
+
+	.container {
+		display: flex;
+		justify-content: space-between;
+	}
+}
