@@ -1,5 +1,13 @@
+# Python
 venv/
 *.pyc
 __pycache__/
+*.sqlite3
+*.env
+
+# Node/React
 node_modules/
 .DS_Store
+dist/
+build/
+.env.local
