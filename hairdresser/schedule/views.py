@@ -19,6 +19,12 @@ from .serializers import (
 class ClientViewSet(viewsets.ModelViewSet):
     queryset = Client.objects.all()
     serializer_class = ClientSerializer
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        phone = self.request.query_params.get('phone')
+        if phone is not None:
+            queryset = queryset.filter(phone=phone)
+        return queryset
 
 class ServiceViewSet(viewsets.ModelViewSet):
     queryset = Service.objects.all()
@@ -46,4 +52,8 @@ class AppointmentViewSet(viewsets.ModelViewSet):
         status = self.request.query_params.get('status')
         if status is not None:
             queryset = queryset.filter(status=status)
+        # Фильтрация по дате
+        datetime = self.request.query_params.get('datetime')
+        if datetime is not None:
+            queryset = queryset.filter(datetime__gte=datetime)
         return queryset

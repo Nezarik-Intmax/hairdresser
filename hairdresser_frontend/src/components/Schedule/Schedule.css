@@ -1,0 +1,92 @@
+.schedule {
+  display: flex;
+  overflow: scroll;
+  gap: 20px;
+  position: relative;
+  z-index: 0;
+  background: white;
+  padding-bottom: 20px;
+}
+.schedule__wrap {
+  position: relative;
+}
+.schedule__line {
+  position: absolute;
+  content: "";
+  top: 60px;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(to right, #000000, #BC9661 50%);
+  z-index: 1;
+}
+.schedule__day {
+  text-align: left;
+  width: 15%;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: stretch;
+  --block-position: 1px;
+}
+.schedule__date {
+  height: 38px;
+  font-size: 20px;
+  background: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid transparent;
+  position: relative;
+  border-radius: 5px;
+}
+.schedule__date_wrap {
+  margin-bottom: 40px;
+  padding: 1px;
+  border: 1px solid transparent;
+  background: linear-gradient(to right, white, white), linear-gradient(to right, var(--myColor1) calc(0px - var(--block-position)), var(--myColor2) calc(580px - var(--block-position)));
+  background-clip: padding-box, border-box;
+  background-origin: padding-box, border-box;
+  transition: --myColor1 0.3s, --myColor2 0.3s, all 0.3s;
+  border-radius: 5px;
+}
+.schedule__date span {
+  position: relative;
+  z-index: 2;
+}
+.schedule__slots {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  justify-content: space-between;
+  flex-grow: 1;
+}
+.schedule__slot {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid transparent;
+  background: linear-gradient(to right, white, white), linear-gradient(to right, var(--myColor1) calc(0px - var(--block-position)), var(--myColor2) calc(580px - var(--block-position)));
+  background-clip: padding-box, border-box;
+  background-origin: padding-box, border-box;
+  transition: --myColor1 0.3s, --myColor2 0.3s, all 0.3s;
+  border-radius: 5px;
+  min-height: 40px;
+}
+.schedule__slot--duration-2 {
+  flex-grow: 2;
+}
+.schedule__slot--duration-3 {
+  flex-grow: 3;
+}
+.schedule__slot--booked {
+  background: #eeeeee;
+}
+.schedule__slot--available {
+  cursor: pointer;
+}
+.schedule__slot--selected, .schedule__slot:focus {
+  background: #BC9661;
+}/*# sourceMappingURL=Schedule.css.map */

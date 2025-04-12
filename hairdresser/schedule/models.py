@@ -3,7 +3,6 @@ from django.db import models
 class Client(models.Model):
 	name = models.CharField(max_length=100)
 	phone = models.CharField(max_length=20)
-	email = models.EmailField(blank=True)
 	registration_date = models.DateTimeField(auto_now_add=True)
 
 	def __str__(self):
@@ -17,7 +16,7 @@ class Service(models.Model):
 	duration = models.DecimalField(max_digits=8, decimal_places=2, default=1)
 
 	def __str__(self):
-		return self.name + " - $" + str(self.price)
+		return f"{self.name} - {self.price} Р - {self.duration} ч"
 
 class Master(models.Model):
 	name = models.CharField(max_length=100)

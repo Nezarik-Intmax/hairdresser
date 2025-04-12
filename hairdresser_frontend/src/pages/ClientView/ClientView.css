@@ -1,0 +1,50 @@
+.filter {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-gap: 10px;
+  margin-bottom: 40px;
+}
+.filter .MuiFormControl-root fieldset {
+  border-color: transparent;
+  background: linear-gradient(to right, white, white), linear-gradient(to right, var(--myColor1), var(--myColor2) 75%);
+  background-clip: padding-box, border-box;
+  background-origin: padding-box, border-box;
+  transition: --myColor1 0.3s, --myColor2 0.3s, all 0.3s;
+}
+.filter .MuiFormControl-root label {
+  background: white;
+}
+.filter .MuiFormControl-root .MuiSelect-select {
+  position: relative;
+  z-index: 2;
+}
+.filter .MuiFormControl-root .MuiSvgIcon-root, .filter .MuiFormControl-root input {
+  z-index: 2;
+}
+.filter .MuiFormControl-root:hover fieldset {
+  --myColor1: #BC9661;
+  border-color: transparent;
+}
+
+.message {
+  border-radius: 5px;
+  padding: 15px;
+  text-align: left;
+  transition: all 0.3s;
+}
+.message__box {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-direction: column;
+  padding-top: 20px;
+}
+.message--success {
+  background-color: #50b070;
+  color: white;
+}
+.message--error {
+  background-color: #b05050;
+  color: white;
+}/*# sourceMappingURL=ClientView.css.map */

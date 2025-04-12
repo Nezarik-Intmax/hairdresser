@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import dayjs from 'dayjs';
 import ScheduleDay from './ScheduleDay';
+import Buttons from '../../components/Button/Buttons';
+import Button from '../../components/Button/Button';
 import './Schedule.scss';
 
-const Schedule = ({ schedule, onSlotClick, isMasterView }) => {
+const Schedule = ({ schedule, onSlotClick, handleBookAppointment, isMasterView }) => {
 	const daysToShow = 10;
 	const workHours = { start: 10, end: 18 };
 	// const [days, setDays] = useState([]);
@@ -58,6 +60,9 @@ const Schedule = ({ schedule, onSlotClick, isMasterView }) => {
 						position={i * 174 - offset} />
 				))}
 			</div>
+			<Buttons style="btn__wrap--center" children={[
+				<Button onClick={handleBookAppointment} text="Записаться" />
+			]} />
 		</div>
 	);
 };

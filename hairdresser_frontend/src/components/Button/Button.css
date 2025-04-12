@@ -1,0 +1,99 @@
+@property --myColor1 {
+  syntax: "<color>";
+  initial-value: #000000;
+  inherits: false;
+}
+@property --myColor2 {
+  syntax: "<color>";
+  initial-value: #BC9661;
+  inherits: false;
+}
+.btn__wrap {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+.btn__wrap.btn__wrap--left {
+  justify-content: flex-start;
+  gap: 10px;
+}
+.btn__wrap.btn__wrap--right {
+  justify-content: flex-end;
+  gap: 10px;
+}
+.btn__wrap.btn__wrap--center {
+  justify-content: center;
+  gap: 10px;
+}
+.btn__wrap.btn__wrap--full-height {
+  align-items: stretch;
+}
+.btn__wrap.btn__wrap--full-width {
+  justify-content: stretch;
+}
+.btn__wrap.btn__wrap--full-width a {
+  width: 100%;
+}
+.btn__wrap a,
+.btn__wrap input {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 15px 60px;
+  color: #282327;
+  background: white;
+  border: 1px solid transparent;
+  background: linear-gradient(to right, white, white), linear-gradient(to right, var(--myColor1), var(--myColor2) 75%);
+  background-clip: padding-box, border-box;
+  background-origin: padding-box, border-box;
+  transition: --myColor1 0.3s, --myColor2 0.3s, all 0.3s;
+  border-radius: 5px;
+  font-weight: 400;
+  font-size: 16px;
+}
+.btn__wrap a:hover,
+.btn__wrap input:hover {
+  color: #BC9661;
+  --myColor1: #BC9661;
+}
+.btn__wrap a.transparent,
+.btn__wrap input.transparent {
+  background: transparent;
+  color: #ffffff;
+  border: 1px solid #BC9661;
+}
+.btn__wrap a.transparent:hover,
+.btn__wrap input.transparent:hover {
+  background: #BC9661;
+  color: #282327;
+}
+.btn__wrap a.secondary,
+.btn__wrap input.secondary {
+  background: rgba(255, 255, 255, 0.0980392157);
+  color: #ffffff;
+  border: rgba(255, 255, 255, 0.0980392157);
+}
+.btn__wrap a.secondary:hover,
+.btn__wrap input.secondary:hover {
+  background: #BC9661;
+  color: #282327;
+}
+@media screen and (max-width: 1160px) {
+  .btn__wrap a.secondary,
+  .btn__wrap input.secondary {
+    text-align: left;
+    color: #BC9661;
+    background: transparent;
+  }
+}
+.btn__wrap.no-padding {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 10px;
+  height: 40px;
+  align-items: stretch;
+}
+.btn__wrap.no-padding a {
+  padding: 0;
+}/*# sourceMappingURL=Button.css.map */

@@ -1,19 +1,20 @@
 import React from 'react';
-import { Button } from '@mui/material';
 import './Schedule.scss';
 
 const ScheduleSlot = ({ day, hour, isBooked, appointment, onSlotClick, isMasterView }) => {
+	const [is_selected, setIsSelected] = React.useState(false);
 	const handleClick = () => {
 		if (isBooked) {
 			onSlotClick(appointment);
 		} else {
+			// setIsSelected(true);
 			onSlotClick(day.hour(hour));
 		}
 	};
 
 	return (
 		<li
-			className={`schedule__slot ${isBooked ? 'schedule__slot--booked' : 'schedule__slot--available'} schedule__slot--duration-${parseInt(appointment.service.duration)}`}
+			className={`schedule__slot ${isBooked ? 'schedule__slot--booked' : 'schedule__slot--available'} schedule__slot--duration-${parseInt(appointment.service.duration)} ${is_selected ? 'schedule__slot--selected' : ''}`}
 			onClick={handleClick}
 			data-disabled={isBooked && !isMasterView}>
 			{isMasterView ? (

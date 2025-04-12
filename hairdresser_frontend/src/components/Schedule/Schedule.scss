@@ -140,5 +140,8 @@
 		&--available{
 			cursor: pointer;
 		}
+		&--selected, &:focus{
+			background: $first-color;
+		}
 	}
 }

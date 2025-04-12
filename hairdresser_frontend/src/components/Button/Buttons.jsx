@@ -1,9 +1,9 @@
 import React from 'react';
 import './Button.scss';
 
-const Buttons = ({ children }) => {
+const Buttons = ({ children, style = "" }) => {
 	return (
-		<div className="btn__wrap">
+		<div className={`btn__wrap ${style}`}>
 			{children}
 		</div>
 	);
