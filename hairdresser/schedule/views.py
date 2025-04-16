@@ -9,7 +9,8 @@ from .serializers import (
 	ServiceSerializer, 
 	MasterSerializer, 
 	AppointmentSerializer,
-	AppointmentSerializerV2
+	AppointmentSerializerV2,
+	AppointmentSerializerV3
 )
 from .services.repository_service import *
 
@@ -141,11 +142,13 @@ class GetAllAppointments(GenericAPIView):
 
 class GetDeleteByMasterAppointments(GenericAPIView):
 	serializer_class = AppointmentSerializer
+	serializer_class2 = AppointmentSerializerV2
+	serializer_class3 = AppointmentSerializerV3
 	renderer_classes = [JSONRenderer]
 	def get(self, request, master_id: int, *args, **kwargs):
 		""" Получение всех записей по идентификатору мастера """
 		appointments = get_appointment_by_master_id(master_id)
-		serializer = self.serializer_class(appointments, many=True)
+		serializer = self.serializer_class3(appointments, many=True)
 		return Response(data=serializer.data, status=status.HTTP_200_OK)
 	# def delete(self, request, id: int) -> Response:
 	# 	""" Delete appointment by id """

@@ -44,7 +44,7 @@ def create_client(name: str, phone: str, registration_date: str) -> int:
 	if not existing_client:
 		client = Client.objects.create(name=name, phone=phone, registration_date=registration_date)
 		client.save()
-	return client.id
+		return client.id
 
 def update_client_by_id(client_id: int, name: str, phone: str) -> None:
 	""" Обновление записи о клиенте по идентификатору (PrimaryKey) """
@@ -130,7 +130,7 @@ def get_appointment_by_id(appointment_id: int) -> Optional[Appointment]:
 
 def get_appointment_by_master_id(master_id: int) -> Iterable[Appointment]:
 	""" Выборка всех записей о приёмах по идентификатору мастера """
-	return Appointment.objects.filter(master_id=master_id).all()
+	return Appointment.objects.filter(master_id=master_id).select_related('client', 'service', 'master').all()
 
 def get_appointment_by_client_id(client_id: int) -> Iterable[Appointment]:
 	""" Выборка всех записей о приёмах по идентификатору клиента """

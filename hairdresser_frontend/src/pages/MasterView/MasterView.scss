@@ -1,0 +1,25 @@
+@use "../../styles/_config" as *;
+
+.message{
+	border-radius: $border-radius;
+	padding: 15px;
+	text-align: left;
+	transition: all 0.3s;
+	&__box{
+		width: 100%;
+		display: flex;
+		justify-content: center;
+		gap: 10px;
+		flex-direction: column;
+		padding-top: 20px;
+	}
+
+	&--success{
+		background-color: #50b070;
+		color: white;
+	}
+	&--error{
+		background-color: #b05050;
+		color: white;
+	}
+}

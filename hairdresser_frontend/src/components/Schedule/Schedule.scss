@@ -125,6 +125,11 @@
 		transition: --myColor1 0.3s, --myColor2 0.3s, all 0.3s;
 		border-radius: $border-radius;
 		min-height: 40px;
+		user-select: none;
+
+		&_info{
+			text-align: center;
+		}
 
 		&--duration-2 {
 			flex-grow: 2;

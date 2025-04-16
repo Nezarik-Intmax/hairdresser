@@ -5,7 +5,7 @@ import Buttons from '../../components/Button/Buttons';
 import Button from '../../components/Button/Button';
 import './Schedule.scss';
 
-const Schedule = ({ schedule, onSlotClick, handleBookAppointment, isMasterView }) => {
+const Schedule = ({ schedule, onSlotClick, handleBookAppointment, isMasterView, selected_slot  }) => {
 	const daysToShow = 10;
 	const workHours = { start: 10, end: 18 };
 	// const [days, setDays] = useState([]);
@@ -57,12 +57,10 @@ const Schedule = ({ schedule, onSlotClick, handleBookAppointment, isMasterView }
 						getAppointmentAtSlot={getAppointmentAtSlot}
 						onSlotClick={onSlotClick}
 						isMasterView={isMasterView}
-						position={i * 174 - offset} />
+						position={i * 174 - offset}
+						selected_slot={selected_slot} />
 				))}
 			</div>
-			<Buttons style="btn__wrap--center" children={[
-				<Button onClick={handleBookAppointment} text="Записаться" />
-			]} />
 		</div>
 	);
 };

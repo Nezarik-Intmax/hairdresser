@@ -5,18 +5,13 @@ import Buttons from '../Button/Buttons';
 import Button from '../Button/Button';
 import './Header.scss';
 
-const Header = ({ isAuthenticated, user, onLogout }) => {
-	const [authModalOpen, setAuthModalOpen] = useState(false);
-	const [authType, setAuthType] = useState('login');
+const Header = ({ isAuthenticated, user, login }) => {
+	// const [authModalOpen, setAuthModalOpen] = useState(false);
 
 	const handleLoginClick = () => {
-		setAuthType('login');
-		setAuthModalOpen(true);
 	};
 
 	const handleRegisterClick = () => {
-		setAuthType('register');
-		setAuthModalOpen(true);
 	};
 
 
@@ -26,21 +21,22 @@ const Header = ({ isAuthenticated, user, onLogout }) => {
 				<Logo />
 				{isAuthenticated ? (
 					<Buttons children={[
-						<Button key="logout" text="Выход" onClick={onLogout} />
+						<Button key="logout" text="Выход" onClick={login} />
 					]} />
 				) : (
 					<Buttons children={[
-						<Button key="register" text="Регистрация" onClick={handleRegisterClick} />,
-						<Button key="login" text="Войти" onClick={handleLoginClick} />
+						// <Button key="register" text="Регистрация" onClick={handleRegisterClick} />,
+						// <Button key="login" text="Войти" onClick={handleLoginClick} />
+						<Button key="login" text="Вход для сотрудников" onClick={login} />
 					]} />
 				)}
 			</div>
 
-			<AuthModal
+			{/* <AuthModal
 				open={authModalOpen}
 				onClose={() => setAuthModalOpen(false)}
 				type={authType}
-			/>
+			/> */}
 		</header >
 	);
 };

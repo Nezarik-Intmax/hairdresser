@@ -52,3 +52,10 @@ class AppointmentSerializerV2(serializers.Serializer):
 	master = serializers.PrimaryKeyRelatedField(read_only=True)
 	datetime = serializers.DateTimeField()
 	status = serializers.CharField(max_length=20)
+
+class AppointmentSerializerV3(serializers.Serializer):
+	client = ClientSerializer()
+	service = ServiceSerializer()
+	master = MasterSerializer()
+	datetime = serializers.DateTimeField()
+	status = serializers.CharField(max_length=20)

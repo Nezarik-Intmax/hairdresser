@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Typography, Box, Grid, Paper } from '@mui/material';
 import MasterSelect from '../../components/MasterSelect/MasterSelect';
 import ServiceSelect from '../../components/ServiceSelect/ServiceSelect';
 import ContactForm from '../../components/ContactForm/ContactForm';
@@ -26,11 +25,11 @@ const ClientView = () => {
 		const fetchData = async () => {
 			try {
 				const [mastersRes, servicesRes] = await Promise.all([
-					api.get('masters/'),
-					api.get('services/'),
+					api.get('masters'),
+					api.get('services'),
 				]);
-				setMasters(Array.isArray(mastersRes.data['results']) ? mastersRes.data['results'] : []);
-				setServices(Array.isArray(servicesRes.data['results']) ? servicesRes.data['results'] : []);
+				setMasters(Array.isArray(mastersRes.data) ? mastersRes.data : []);
+				setServices(Array.isArray(servicesRes.data) ? servicesRes.data : []);
 			} catch (error) {
 				console.error('Ошибка загрузки данных:', error);
 			}
@@ -43,19 +42,10 @@ const ClientView = () => {
 		if (selectedMaster) {
 			const fetchSchedule = async () => {
 				try {
-					let schedule_tmp = [];
-					let page = 1;
-					while(1){
-						const response = await api.get(`appointments/?master_id=${selectedMaster.id}&page=${page}`);
-						schedule_tmp = [...schedule_tmp, ...response.data.results];
-						if (response.data.next === null) {
-							setSchedule(schedule_tmp);
-							break;
-						}else{
-							page++;
-						}
-					}
+					const response = await api.get(`appointments/${selectedMaster.id}`);
+					setSchedule(response.data);
 				} catch (error) {
+					setMessage((<div className="message message--error">Ошибка загрузки расписания</div>));
 					console.error('Ошибка загрузки расписания:', error);
 				}
 			};
@@ -66,24 +56,15 @@ const ClientView = () => {
 	const fetchSchedule = async () => {
 		if (!selectedMaster) return;
 		try {
-			let schedule_tmp = [];
-			let page = 1;
-			while(1){
-				const response = await api.get(`appointments/?master_id=${selectedMaster.id}&page=${page}`);
-				schedule_tmp = [...schedule_tmp, ...response.data.results];
-				if (response.data.next === null) {
-					setSchedule(schedule_tmp);
-					break;
-				}else{
-					page++;
-				}
-			}
+			const response = await api.get(`appointments/${selectedMaster.id}`);
+			setSchedule(response.data);
 		} catch (error) {
+			setMessage((<div className="message message--error">Ошибка загрузки расписания</div>));
 			console.error('Ошибка загрузки расписания:', error);
 		}
 	};
 	const onSlotClick = async (timeSlot) => {
-		setSlot(timeSlot);
+		setSlot([timeSlot, selectedService ? selectedService.duration : 1]);
 	}
 	const handleBookAppointment = async () => {
 		if (!selectedMaster || !selectedService || !contactInfo.name || !contactInfo.phone) {
@@ -93,35 +74,41 @@ const ClientView = () => {
 		}
 
 		try {
+			let client_id = 0;
 			try {
-				let client_id = 0;
-				const is_client_exist = await api.get(`clients/?phone=${encodeURIComponent(contactInfo.phone)}`);
-				if (is_client_exist.data.count > 0) {
-					client_id = is_client_exist.data.results[0].id;
+				const is_client_exist = await api.get(`clients/${encodeURIComponent(contactInfo.phone)}`);
+				if (is_client_exist.data.id > 0) {
+					client_id = is_client_exist.data.id;
+					console.log('Клиент уже зарегистрирован');
 					// alert('Клиент уже зарегистрирован');
 				} else {
-					client_id = await api.post('clients/', {
+					client_id = await api.post('clients', {
 						name: contactInfo.name,
 						phone: contactInfo.phone,
 					});
-					client_id = client_id.data.id
+					client_id = client_id.data
+					console.log('Клиент успешно зарегистрирован');
 					// alert('Клиент успешно зарегистрирован');
 				}
-				const timeSlot_date = dayjs(slot).set('minute', 0).set('second', 0).toDate();
-				await api.post('appointments/', {
-					master_id: selectedMaster.id,
-					service_id: selectedService.id,
-					datetime: timeSlot_date.toISOString(),
-					client_id: client_id,
-					status: 'pending',
-				});
-				await fetchSchedule();
-				setMessage((<div className="message message--success">Запись успешно создана!</div>));
-				// alert('Запись успешно создана!');
 			} catch (error) {
 				console.error('Ошибка создания клиента:', error);
 				setMessage((<div className="message message--error">Ошибка при создании клиента</div>));
 				// alert('Ошибка при создании клиента');
+			} finally {
+				console.log(client_id);
+				if (client_id) {
+					const timeSlot_date = dayjs(slot[0]).set('minute', 0).set('second', 0).toDate();
+					await api.post('appointments', {
+						master: selectedMaster.id,
+						service: selectedService.id,
+						client: client_id,
+						datetime: timeSlot_date.toISOString(),
+						status: 'pending',
+					});
+					await fetchSchedule();
+					setMessage((<div className="message message--success">Запись успешно создана!</div>));
+					// alert('Запись успешно создана!');
+				}
 			}
 		} catch (error) {
 			console.error('Ошибка создания записи:', error);
@@ -145,9 +132,11 @@ const ClientView = () => {
 						onSlotClick={onSlotClick}
 						isMasterView={false}
 						handleBookAppointment={handleBookAppointment}
+						selected_slot={slot}
 					/>
 				)}
 				<div className="message__box">
+					
 					{message}
 				</div>
 

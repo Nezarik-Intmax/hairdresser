@@ -12,37 +12,11 @@ import './styles/_normalize_theme.scss';
 
 function App() {
 	const [isAuthenticated, setIsAuthenticated] = useState(false);
-	const [user, setUser] = useState(null);
-	const [loading, setLoading] = useState(true);
+	const [user, setUser] = useState(false);
 
-	useEffect(() => {
-		const verifyAuth = async () => {
-			try {
-				const token = localStorage.getItem('token');
-				if (token) {
-					const response = await api.get('user/');
-					setIsAuthenticated(true);
-					setUser(response.data);
-				}
-			} catch (error) {
-				console.error('Auth verification failed:', error);
-				localStorage.removeItem('token');
-			} finally {
-				setLoading(false);
-			}
-		};
-
-		verifyAuth();
-	}, []);
-
-	const handleLogout = () => {
-		localStorage.removeItem('token');
-		setIsAuthenticated(false);
-		setUser(null);
-	};
-
-	if (loading) {
-		return <div>Loading...</div>;
+	const login = async () => {
+		setUser(3)
+		window.location.href = `/master/3`;
 	}
 
 	return (
@@ -51,30 +25,24 @@ function App() {
 				<Header
 					isAuthenticated={isAuthenticated}
 					user={user}
-					onLogout={handleLogout}
+					login={login}
 				/>
 
 				<Routes>
 					<Route path="/" element={
-						isAuthenticated && user?.is_master ? (
+						user ? (
 							<MasterView />
 						) : (
 							<ClientView />
 						)
 					} />
-					<Route path="/master" element={
-						isAuthenticated && user?.is_master ? (
-							<MasterView />
-						) : (
-							<Navigate to="/" />
-						)
-					} />
+					<Route path={`/master/3`} element={<MasterView />} />
 					<Route path="*" element={<Navigate to="/" />} />
 				</Routes>
 				<Header
 					isAuthenticated={isAuthenticated}
 					user={user}
-					onLogout={handleLogout}
+					onLogout={login}
 				/>
 			</div>
 		</Router>

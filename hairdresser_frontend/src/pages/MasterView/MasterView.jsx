@@ -1,60 +1,55 @@
 import React, { useState, useEffect } from 'react';
-import { Typography, Box, Paper } from '@mui/material';
+import MasterSelect from '../../components/MasterSelect/MasterSelect';
+import ServiceSelect from '../../components/ServiceSelect/ServiceSelect';
+import ContactForm from '../../components/ContactForm/ContactForm';
 import Schedule from '../../components/Schedule/Schedule';
+import Title from '../../components/Title/Title';
 import api from '../../services/api';
-import './MasterView.css';
+import dayjs from 'dayjs';
+import './MasterView.scss';
 
 const MasterView = () => {
-  const [schedule, setSchedule] = useState([]);
-  const [loading, setLoading] = useState(true);
+	const [selectedMaster, setSelectedMaster] = useState({"id":3});
+	const [schedule, setSchedule] = useState([]);
+	const [message, setMessage] = useState();
+	const [slot, setSlot] = useState(null);
 
-  useEffect(() => {
-    const fetchMasterSchedule = async () => {
-      try {
-        const response = await api.get('appointments/my-schedule/');
-        setSchedule(response.data);
-      } catch (error) {
-        console.error('Ошибка загрузки расписания:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
+	useEffect(() => {
+		if (selectedMaster) {
+			const fetchSchedule = async () => {
+				try {
+					const response = await api.get(`appointments/${selectedMaster.id}`);
+					setSchedule(response.data);
+				} catch (error) {
+					setMessage((<div className="message message--error">Ошибка загрузки расписания</div>));
+					console.error('Ошибка загрузки расписания:', error);
+				}
+			};
 
-    fetchMasterSchedule();
-  }, []);
+			fetchSchedule();
+		}
+	}, [selectedMaster]);
+	const onSlotClick = (slot) => {}
+	const handleBookAppointment = () => {}
 
-  const handleSlotClick = async (appointment) => {
-    if (appointment && window.confirm('Завершить эту запись?')) {
-      try {
-        await api.patch(`appointments/${appointment.id}/`, { status: 'completed' });
-        setSchedule(schedule.map(item => 
-          item.id === appointment.id ? { ...item, status: 'completed' } : item
-        ));
-      } catch (error) {
-        console.error('Ошибка обновления записи:', error);
-      }
-    }
-  };
+	return (
+		<div className="main">
+			<div className="container">
+				<Title h="h1">Мое расписание</Title>
+				<Schedule
+					schedule={schedule}
+					onSlotClick={onSlotClick}
+					isMasterView={true}
+					handleBookAppointment={handleBookAppointment}
+					selected_slot={slot}
+				/>
+				<div className="message__box">
+					{message}
+				</div>
 
-  return (
-    <Box sx={{ p: 3 }}>
-      <Typography variant="h4" gutterBottom>
-        Мое расписание
-      </Typography>
-      
-      <Paper elevation={3} sx={{ p: 3 }}>
-        {loading ? (
-          <Typography>Загрузка...</Typography>
-        ) : (
-          <Schedule 
-            schedule={schedule} 
-            onSlotClick={handleSlotClick} 
-            isMasterView={true} 
-          />
-        )}
-      </Paper>
-    </Box>
-  );
+			</div>
+		</div>
+	);
 };
 
 export default MasterView;
