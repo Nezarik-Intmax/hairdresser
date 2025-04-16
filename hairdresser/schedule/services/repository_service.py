@@ -2,23 +2,29 @@ from typing import Optional, Iterable, List
 from django.db.models import QuerySet
 # Импортируем модели DAO
 from ..models import Client, Service, Master, Appointment
+from django.core.files.base import ContentFile
+import base64
+import uuid
 
 """
 
-    Данный модуль является промежуточным слоем приложения, который отделяет операции 
-    для работы с моделями DAO от основной бизнес-логики приложения. Создание данного 
-    слоя позволяет унифицировать функции работы с источником данных, и, например, если 
-    в приложении нужно будет использовать другой framework для работы с БД, вы можете 
-    создать новый модуль (repository_service_newframework.py) и реализовать в нем функции 
-    с аналогичными названиями (get_weather_by_city_id, и т.д.). Новый модуль можно будет
-    просто импортировать в модуль с основной бизнес-логикой, практически не меняя при этом
-    остальной код.
-    Также отделение функций работы с БД можно сделать через отдельный абстрактный класс и 
-    использовать порождающий паттерн для переключения между необходимыми реализацииями.
+	Данный модуль является промежуточным слоем приложения, который отделяет операции 
+	для работы с моделями DAO от основной бизнес-логики приложения. Создание данного 
+	слоя позволяет унифицировать функции работы с источником данных, и, например, если 
+	в приложении нужно будет использовать другой framework для работы с БД, вы можете 
+	создать новый модуль (repository_service_newframework.py) и реализовать в нем функции 
+	с аналогичными названиями (get_weather_by_city_id, и т.д.). Новый модуль можно будет
+	просто импортировать в модуль с основной бизнес-логикой, практически не меняя при этом
+	остальной код.
+	Также отделение функций работы с БД можно сделать через отдельный абстрактный класс и 
+	использовать порождающий паттерн для переключения между необходимыми реализацииями.
 
 """
 
 """ Работа с клиентами """
+def get_all_clients() -> Iterable[Client]:
+	""" Выборка всех записей о клиентах """
+	return Client.objects.all()
 def get_clinet_by_id(client_id: int) -> Optional[Client]:
 	""" Выборка одной записи о клиенте по идентификатору (PrimaryKey) """
 	return Client.objects.filter(id=client_id).first()
@@ -40,12 +46,24 @@ def create_client(name: str, phone: str, registration_date: str) -> int:
 		client.save()
 	return client.id
 
+def update_client_by_id(client_id: int, name: str, phone: str) -> None:
+	""" Обновление записи о клиенте по идентификатору (PrimaryKey) """
+	# get_clinet_by_id(client_id).update(name=name, phone=phone)
+	Client.objects.filter(id=client_id).update(name=name, phone=phone)
+
 def delete_client_by_id(client_id: int) -> None:
 	""" Удаление записи о клиенте по идентификатору (PrimaryKey) """
 	get_clinet_by_id(client_id).delete()
 
+def delete_client_by_phone(phone: int) -> None:
+	""" Удаление записи о клиенте по номеру телефона """
+	get_client_by_phone(phone).delete()
+
 
 """ Работа с услугами """
+def get_all_services() -> Iterable[Service]:
+	""" Выборка всех записей о услугах """
+	return Service.objects.all()
 def get_service_by_id(service_id: int) -> Optional[Service]:
 	""" Выборка одной записи о услуге по идентификатору (PrimaryKey) """
 	return Service.objects.filter(id=service_id).first()
@@ -60,11 +78,20 @@ def create_service(name: str, description: str, price: int, duration: int) -> in
 	service.save()
 	return service.id
 
+def create_service(name: str, price: int, duration: int) -> int:
+	""" Создание нового объекта Service и добавление записи о услуге """
+	service = Service.objects.create(name=name, price=price, duration=duration)
+	service.save()
+	return service.id
+
 def delete_service_by_id(service_id: int) -> None:
 	""" Удаление записи о услуге по идентификатору (PrimaryKey) """
 	get_service_by_id(service_id).delete()
 
 """ Работа с мастерами """
+def get_all_masters() -> Iterable[Master]:
+	""" Выборка всех записей о мастерах """
+	return Master.objects.all()
 def get_master_by_id(master_id: int) -> Optional[Master]:
 	""" Выборка одной записи о мастере по идентификатору (PrimaryKey) """
 	return Master.objects.filter(id=master_id).first()
@@ -75,6 +102,16 @@ def get_master_by_name(master_name: str) -> Iterable[Master]:
 
 def create_master(name: str, specialization: str, photo: str) -> int:
 	""" Создание нового объекта Master и добавление записи о мастере """
+		# Обработка base64 изображения, если передано
+	if photo.startswith('data:image'):
+		format, imgstr = photo.split(';base64,')
+		ext = format.split('/')[-1]
+		
+		# photo = photo.copy()
+		photo = ContentFile(
+			base64.b64decode(imgstr),
+			name=f"{uuid.uuid4()}.{ext}"
+		)
 	master = Master.objects.create(name=name, specialization=specialization, photo=photo)
 	master.save()
 	return master.id
@@ -84,6 +121,9 @@ def delete_master_by_id(master_id: int) -> None:
 	get_master_by_id(master_id).delete()
 
 """ Записи на приём """
+def get_all_appointments() -> Iterable[Appointment]:
+	""" Выборка всех записей о приёмах """
+	return Appointment.objects.all()
 def get_appointment_by_id(appointment_id: int) -> Optional[Appointment]:
 	""" Выборка одной записи о приёме по идентификатору (PrimaryKey) """
 	return Appointment.objects.filter(id=appointment_id).first()
@@ -104,7 +144,7 @@ def get_appointment_by_datetime(datetime: str) -> Iterable[Appointment]:
 	""" Выборка всех записей о приёмах по дате """
 	return Appointment.objects.filter(datetime=datetime).all()
 
-def create_appointment(client_id: int, service_id: int, master_id: int, datetime: str, status: str) -> None:
+def create_appointment(client_id: int, service_id: int, master_id: int, datetime: str, status: str = "pending") -> None:
 	""" Создание нового объекта Appointment и добавление записи о приёме """
 	appointment = Appointment.objects.create(client_id=client_id, service_id=service_id, master_id=master_id, datetime=datetime, status=status)
 	appointment.save()
